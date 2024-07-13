@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import ApplicationForm
 from .models import Form
 from django.contrib import messages
+from django.core.mail import EmailMessage
 
 
 # Create your views here.
@@ -23,6 +24,10 @@ def index(request):
                 date=date,
                 occupation=occupation
             )
+
+            message_body = f'A new job application was submitted. Thank u, {first_name}'
+            email_message = EmailMessage('Form submission confirmation', message_body, to=[email])
+            email_message.send()
 
             # 添加通知
             messages.success(request, 'Form submitted successfully!')
